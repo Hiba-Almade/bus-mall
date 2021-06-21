@@ -41,15 +41,38 @@ for (let i = 0; i < imgArray.length; i++) {
 let firstIndex;
 let secondIndex;
 let lastIndex;
+let prefFirst =-1;
+let prefSecond =-1;
+let prefLast = -1 ;
+
 function render() {
-    firstIndex = randomNumber(0, imgArray.length - 1);
+    do {
+        firstIndex = randomNumber(0, imgArray.length - 1);
+    } while (firstIndex === prefFirst || firstIndex === prefSecond || firstIndex === prefLast);
+    
+    prefFirst = firstIndex;
 
     do {
         secondIndex = randomNumber(0, imgArray.length - 1);
-    } while (firstIndex === secondIndex);
+    } while (firstIndex === secondIndex || secondIndex === prefFirst || secondIndex === prefSecond || secondIndex === prefLast);
+    
+    prefSecond = secondIndex;
     do {
         lastIndex = randomNumber(0, imgArray.length - 1);
-    } while (firstIndex === lastIndex || secondIndex === lastIndex);
+    } while ((firstIndex === lastIndex || secondIndex === lastIndex)|| lastIndex === prefFirst || lastIndex === prefSecond || lastIndex === prefLast);
+    prefLast = lastIndex;
+    console.log(firstIndex , secondIndex , lastIndex);
+    // console.log("last" , prefFirst , prefSecond , prefLast);
+
+
+    // firstIndex = randomNumber(0, imgArray.length - 1);
+
+    // do {
+    //     secondIndex = randomNumber(0, imgArray.length - 1);
+    // } while (firstIndex === secondIndex);
+    // do {
+    //     lastIndex = randomNumber(0, imgArray.length - 1);
+    // } while (firstIndex === lastIndex || secondIndex === lastIndex);
 
     firstImg.src = Images.all[firstIndex].path;
     secondImg.src = Images.all[secondIndex].path;
@@ -90,6 +113,7 @@ function eventHandler(e) {
         lastImg.src = 'https://cianaatech.com/wp-content/uploads/2021/03/placeholder.png';
         imgSection.removeEventListener('click', eventHandler);
         document.getElementById("resultButton").disabled = false;
+        drawChart();
     }
 }
 
@@ -99,7 +123,7 @@ render();
 
 // button 
 let flag = true;
-let list=document.getElementById('list');
+let list = document.getElementById('list');
 function listRender() {
 
     if (flag == true) {
@@ -108,7 +132,7 @@ function listRender() {
             list.appendChild(itemList);
             itemList.textContent = `${Images.all[i].name} had ${Images.all[i].click} votes, and was seen ${Images.all[i].time} times.`
         }
-        flag=false;
+        flag = false;
     }
     else {
         while (list.hasChildNodes()) {
@@ -118,3 +142,47 @@ function listRender() {
         listRender();
     }
 }
+
+
+function drawChart() {
+
+    let name = [];
+    let time = [];
+    let click = [];
+  
+    for(let i = 0; i < Images.all.length; i++) {
+      name.push(Images.all[i].name);
+      time.push(Images.all[i].time);
+      click.push(Images.all[i].click);
+    }
+  
+    let ctx = document.getElementById( 'myChart' ).getContext( '2d' );
+  
+    let myChart = new Chart( ctx, {
+      type: 'bar',
+      data: {
+        labels: name,
+        datasets: [{
+          label: '# of views',
+          data:time,
+          backgroundColor: 'rgba(147, 0, 207, 1)',
+          borderColor: 'rgba(0, 0, 0, 1)',
+          borderWidth: 1
+        },{
+            label: '# of clicks',
+            data: click,
+            backgroundColor: 'rgba(0, 46, 255, 0.5)',
+            borderColor: 'rgba(0, 0, 0, 1)',
+            borderWidth: 1
+          }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    } );
+  
+  }
