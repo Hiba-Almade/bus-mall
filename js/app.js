@@ -89,6 +89,7 @@ function eventHandler(e) {
         secondImg.src = 'https://cianaatech.com/wp-content/uploads/2021/03/placeholder.png';
         lastImg.src = 'https://cianaatech.com/wp-content/uploads/2021/03/placeholder.png';
         imgSection.removeEventListener('click', eventHandler);
+        document.getElementById("resultButton").disabled = false;
     }
 }
 
