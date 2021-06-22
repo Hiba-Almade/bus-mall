@@ -1,5 +1,6 @@
 'use strict';
 
+
 let imgArray = [
     'bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg',
     'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg',
@@ -13,9 +14,15 @@ let firstImg = document.getElementById('img1');
 let secondImg = document.getElementById('img2');
 let lastImg = document.getElementById('img3');
 let listSection = document.getElementById('listSection');
-
 let count = 0;
 let round = 25;
+let firstIndex;
+let secondIndex;
+let lastIndex;
+let prefFirst = -1;
+let prefSecond = -1;
+let prefLast = -1;
+
 
 function randomNumber(min, max) {
     min = Math.ceil(min);
@@ -35,26 +42,34 @@ function Images(name, path) {
 Images.all = [];
 
 for (let i = 0; i < imgArray.length; i++) {
-    new Images(imgArray[i].split('.')[0], imgArray[i])
+    let newObj = new Images(imgArray[i].split('.')[0], imgArray[i])
 }
 
-let firstIndex;
-let secondIndex;
-let lastIndex;
-let prefFirst = -1;
-let prefSecond = -1;
-let prefLast = -1;
+//console.log('first' , Images.all)
+
+function getData() {
+    let data = JSON.parse(localStorage.getItem('imgLs'));
+    if (data) {
+        Images.all = data;
+
+    }
+}
+
+getData();
+// console.log('after git', Images.all);
+
+
 
 function render() {
     do {
         firstIndex = randomNumber(0, imgArray.length - 1);
     } while (firstIndex === prefFirst || firstIndex === prefSecond || firstIndex === prefLast);
-   
+
 
     do {
         secondIndex = randomNumber(0, imgArray.length - 1);
     } while (firstIndex === secondIndex || secondIndex === prefFirst || secondIndex === prefSecond || secondIndex === prefLast);
-  
+
     do {
         lastIndex = randomNumber(0, imgArray.length - 1);
     } while (firstIndex === lastIndex || secondIndex === lastIndex || lastIndex === prefFirst || lastIndex === prefSecond || lastIndex === prefLast);
@@ -62,7 +77,7 @@ function render() {
     prefFirst = firstIndex;
     prefSecond = secondIndex;
 
-    console.log(firstIndex, secondIndex, lastIndex);
+    //console.log(firstIndex, secondIndex, lastIndex);
     // console.log("last" , prefFirst , prefSecond , prefLast);
 
     firstImg.src = Images.all[firstIndex].path;
@@ -73,6 +88,8 @@ function render() {
     Images.all[secondIndex].time++;
     Images.all[lastIndex].time++;
 }
+
+//console.log('afer time', Images.all);
 
 function eventHandler(e) {
 
@@ -93,6 +110,8 @@ function eventHandler(e) {
             //    console.log(count, Images.all[lastIndex].click, Images.all[lastIndex].time);
             count++;
         }
+
+
     } else {
         firstImg.src = 'https://cianaatech.com/wp-content/uploads/2021/03/placeholder.png';
         secondImg.src = 'https://cianaatech.com/wp-content/uploads/2021/03/placeholder.png';
@@ -101,11 +120,14 @@ function eventHandler(e) {
         document.getElementById("resultButton").disabled = false;
         drawChart();
     }
+    localStorage.setItem('imgLs', JSON.stringify(Images.all));
 }
 
 imgSection.addEventListener('click', eventHandler);
 
 render();
+
+
 
 // button 
 let flag = true;
@@ -128,7 +150,6 @@ function listRender() {
         listRender();
     }
 }
-
 
 function drawChart() {
 
@@ -172,3 +193,8 @@ function drawChart() {
     });
 
 }
+
+
+// function clear() {
+//     localStorage.clear();
+// }
