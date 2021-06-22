@@ -49,18 +49,19 @@ function render() {
     do {
         firstIndex = randomNumber(0, imgArray.length - 1);
     } while (firstIndex === prefFirst || firstIndex === prefSecond || firstIndex === prefLast);
-
-    prefFirst = firstIndex;
+   
 
     do {
         secondIndex = randomNumber(0, imgArray.length - 1);
     } while (firstIndex === secondIndex || secondIndex === prefFirst || secondIndex === prefSecond || secondIndex === prefLast);
-
-    prefSecond = secondIndex;
+  
     do {
         lastIndex = randomNumber(0, imgArray.length - 1);
     } while (firstIndex === lastIndex || secondIndex === lastIndex || lastIndex === prefFirst || lastIndex === prefSecond || lastIndex === prefLast);
     prefLast = lastIndex;
+    prefFirst = firstIndex;
+    prefSecond = secondIndex;
+
     console.log(firstIndex, secondIndex, lastIndex);
     // console.log("last" , prefFirst , prefSecond , prefLast);
 
