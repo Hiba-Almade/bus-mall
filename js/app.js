@@ -59,7 +59,7 @@ function render() {
     prefSecond = secondIndex;
     do {
         lastIndex = randomNumber(0, imgArray.length - 1);
-    } while ((firstIndex === lastIndex || secondIndex === lastIndex) || lastIndex === prefFirst || lastIndex === prefSecond || lastIndex === prefLast);
+    } while (firstIndex === lastIndex || secondIndex === lastIndex || lastIndex === prefFirst || lastIndex === prefSecond || lastIndex === prefLast);
     prefLast = lastIndex;
     console.log(firstIndex, secondIndex, lastIndex);
     // console.log("last" , prefFirst , prefSecond , prefLast);
